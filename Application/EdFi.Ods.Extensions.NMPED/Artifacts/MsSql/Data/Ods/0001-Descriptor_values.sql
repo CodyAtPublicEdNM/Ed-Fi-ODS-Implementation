@@ -41,6 +41,17 @@ BEGIN*/
 	values ('uri://nmped.org/EducationOrganizationCategoryDescriptor','State Supported','State Supported','State Supported');
 	INSERT INTO edfi.EducationOrganizationCategoryDescriptor (EducationOrganizationCategoryDescriptorId) values (@@IDENTITY);
 
+	INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+	VALUES ('uri://nmped.org/EducationOrganizationCategoryDescriptor','Home School','Home School','Home School');
+	INSERT INTO edfi.EducationOrganizationCategoryDescriptor (EducationOrganizationCategoryDescriptorId) values (@@IDENTITY);
+
+	INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+	VALUES ('uri://nmped.org/EducationOrganizationCategoryDescriptor','BIA','BIA','BIA');
+	INSERT INTO edfi.EducationOrganizationCategoryDescriptor (EducationOrganizationCategoryDescriptorId) values (@@IDENTITY);
+
+	INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+	VALUES ('uri://nmped.org/EducationOrganizationCategoryDescriptor','Private','Private','Private');
+	INSERT INTO edfi.EducationOrganizationCategoryDescriptor (EducationOrganizationCategoryDescriptorId) values (@@IDENTITY);
 
 /*END;*/
 
@@ -880,6 +891,26 @@ INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor(LocalEducationAgencyCate
 INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
 values ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','State Supported','State Supported','State Supported');
 INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor(LocalEducationAgencyCategoryDescriptorID) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+VALUES ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','State District','State District','State District');
+INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor (LocalEducationAgencyCategoryDescriptorId) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+VALUES ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','BIA District','BIA District','BIA District');
+INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor (LocalEducationAgencyCategoryDescriptorId) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+VALUES ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','State','State','State');
+INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor (LocalEducationAgencyCategoryDescriptorId) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+VALUES ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','DOH FIT','DOH FIT','DOH FIT');
+INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor (LocalEducationAgencyCategoryDescriptorId) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
+VALUES ('uri://nmped.org/LocalEducationAgencyCategoryDescriptor','State Charter','State Charter','State Charter');
+INSERT INTO edfi.LocalEducationAgencyCategoryDescriptor (LocalEducationAgencyCategoryDescriptorId) values (@@IDENTITY);
 
 
 /*School Category Descriptors*/
@@ -3292,6 +3323,22 @@ INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Desc
 
 INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description]) 
 	values ('uri://nmped.org/CourseLevelCharacteristicDescriptor','Basic/General','Basic/General','Basic/General');
+	INSERT INTO edfi.CourseLevelCharacteristicDescriptor (CourseLevelCharacteristicDescriptorId) values (@@IDENTITY);
+	
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description])   
+	VALUES ('uri://nmped.org/CourseLevelCharacteristicDescriptor', 'Capstone','Capstone','Capstone');
+	INSERT INTO edfi.CourseLevelCharacteristicDescriptor (CourseLevelCharacteristicDescriptorId) values (@@IDENTITY);
+
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description])   
+	VALUES ('uri://nmped.org/CourseLevelCharacteristicDescriptor', 'Work Based Learning','Work Based Learning','Work Based Learning');
+	INSERT INTO edfi.CourseLevelCharacteristicDescriptor (CourseLevelCharacteristicDescriptorId) values (@@IDENTITY);
+	
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description])   
+	VALUES ('uri://nmped.org/CourseLevelCharacteristicDescriptor', 'F','Non-Trad F','Non-Traditional Gender Female');
+	INSERT INTO edfi.CourseLevelCharacteristicDescriptor (CourseLevelCharacteristicDescriptorId) values (@@IDENTITY);
+	
+INSERT INTO edfi.Descriptor ([Namespace], [CodeValue], [ShortDescription], [Description])   
+	VALUES ('uri://nmped.org/CourseLevelCharacteristicDescriptor', 'M','Non-Trad M','Non-Traditional Gender Male');
 	INSERT INTO edfi.CourseLevelCharacteristicDescriptor (CourseLevelCharacteristicDescriptorId) values (@@IDENTITY);
 
 
