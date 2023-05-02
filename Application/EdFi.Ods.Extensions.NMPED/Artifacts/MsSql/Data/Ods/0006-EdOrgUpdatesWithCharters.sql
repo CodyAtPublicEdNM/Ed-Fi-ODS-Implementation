@@ -166,6 +166,87 @@ UPDATE edfi.EducationOrganization set NameOfInstitution = 'THRIVE COMMUNITY SCHO
 UPDATE edfi.EducationOrganization set NameOfInstitution = 'RIO GRANDE ACADEMY OF FINE ARTS' where EducationOrganizationId = '35583000'
 UPDATE edfi.EducationOrganization set NameOfInstitution = 'PECOS CONNECTIONS ACADEMY' where EducationOrganizationId = '35584000'
 UPDATE edfi.EducationOrganization set NameOfInstitution = 'VISTA GRANDE HIGH SCHOOL' where EducationOrganizationId = '35585000'
+UPDATE edfi.EducationOrganization SET NameOfInstitution = 'NEW MEXICO CONNECTIONS ACADEMY' WHERE EducationOrganizationId = '35554000'
+UPDATE edfi.EducationOrganization SET NameOfInstitution = 'TAOS INTERNATIONAL SCHOOL' WHERE EducationOrganizationId = '35555000'
+
+-- EducationOrganizationCategory Inserts for missing EdOrgs
+
+-- NMPED Insert as State Education Agency and two missing EdOrgs
+INSERT INTO [edfi].[EducationOrganizationCategory]
+           (EducationOrganizationId,
+		    EducationOrganizationCategoryDescriptorId
+		   )
+VALUES
+(35000000, (SELECT TOP 1 DescriptorID FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://ed-fi.org/EducationOrganizationCategoryDescriptor' AND CodeValue ='State Education Agency')),
+(35554000, (SELECT TOP 1 DescriptorID FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://nmped.org/EducationOrganizationCategoryDescriptor' AND CodeValue ='Central Office')),
+(35555000, (SELECT TOP 1 DescriptorID FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://nmped.org/EducationOrganizationCategoryDescriptor' AND CodeValue ='Central Office'))
+
+-- HOME SCHOOL
+INSERT INTO [edfi].[EducationOrganizationCategory]
+           (EducationOrganizationId,
+		    EducationOrganizationCategoryDescriptorId
+		   )
+SELECT EducationOrganizationId, (SELECT TOP 1 DescriptorId FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://nmped.org/EducationOrganizationCategoryDescriptor' AND CodeValue = 'Home School') AS EducationOrganizationCategoryDescriptorId
+FROM edfi.EducationOrganization WITH (NOLOCK)
+WHERE NameOfInstitution = 'HOME SCHOOL'
+
+-- MISC PRESCHOOL PROGRAM
+INSERT INTO [edfi].[EducationOrganizationCategory]
+           (EducationOrganizationId,
+		    EducationOrganizationCategoryDescriptorId
+		   )
+SELECT EducationOrganizationId, (SELECT TOP 1 DescriptorId FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://nmped.org/EducationOrganizationCategoryDescriptor' AND CodeValue = 'Off-Site') AS EducationOrganizationCategoryDescriptorId
+FROM edfi.EducationOrganization WITH (NOLOCK)
+WHERE NameOfInstitution = 'MISC PRESCHOOL PROGRAM' AND EducationOrganizationId NOT IN (SELECT EducationOrganizationId FROM edfi.EducationOrganizationCategory)
+
+-- MISC PRIVATE
+INSERT INTO [edfi].[EducationOrganizationCategory]
+           (EducationOrganizationId,
+		    EducationOrganizationCategoryDescriptorId
+		   )
+SELECT EducationOrganizationId, (SELECT TOP 1 DescriptorId FROM edfi.Descriptor WITH (NOLOCK) WHERE [Namespace] = 'uri://nmped.org/EducationOrganizationCategoryDescriptor' AND CodeValue = 'Private') AS EducationOrganizationCategoryDescriptorId
+FROM edfi.EducationOrganization WITH (NOLOCK)
+WHERE NameOfInstitution = 'MISC PRIVATE'
+
+--update OperationalStatus for EdOrgs
+
+-- start by setting all EdOrgs to Active
+UPDATE edfi.EducationOrganization SET OperationalStatusDescriptorId = 
+	(SELECT DescriptorId
+	 FROM edfi.Descriptor WITH (NOLOCK)
+	 WHERE [Namespace] = 'uri://ed-fi.org/OperationalStatusDescriptor'
+	 AND CodeValue = 'Active');
+	 
+-- Update specific EdOrgs to New 
+UPDATE edfi.EducationOrganization SET OperationalStatusDescriptorId = 
+	(SELECT DescriptorId
+	 FROM edfi.Descriptor WITH (NOLOCK)
+	 WHERE [Namespace] = 'uri://ed-fi.org/OperationalStatusDescriptor'
+	 AND CodeValue = 'New')
+WHERE EducationOrganizationId IN (35582000,35582001,35583000,35583001,35584000,35585000)
+
+-- Update specific EdOrgs to Changed 
+UPDATE edfi.EducationOrganization SET OperationalStatusDescriptorId = 
+	(SELECT DescriptorId
+	 FROM edfi.Descriptor WITH (NOLOCK)
+	 WHERE [Namespace] = 'uri://ed-fi.org/OperationalStatusDescriptor'
+	 AND CodeValue = 'Changed')
+WHERE EducationOrganizationId IN (35584001,35585001)
+
+-- Update specific EdOrgs to Closed 
+UPDATE edfi.EducationOrganization SET OperationalStatusDescriptorId = 
+	(SELECT DescriptorId
+	 FROM edfi.Descriptor WITH (NOLOCK)
+	 WHERE [Namespace] = 'uri://ed-fi.org/OperationalStatusDescriptor'
+	 AND CodeValue = 'Closed')
+WHERE EducationOrganizationId IN (35080185,35502992,35502997,35502999,35506992,35506997,35506999,35507992,
+					35507997,35507999,35508992,35508997,35508999,35513992,35513997,35513999,35514992,35514997,
+					35514999,35522992,35522997,35522999,35523992,35523997,35523999,35526992,35526997,35526999,
+					35527992,35527997,35527999,35533992,35533997,35533999,35534992,35534997,35534999,35537992,
+					35537997,35537999,35538992,35538997,35538999,35540992,35540997,35540999,35541992,35541997,
+					35541999,35543992,35543997,35543999,35545992,35545997,35545999,35548992,35548997,35548999,
+					35551992,35551997,35551999,35553992,35553997,35553999,35556992,35556997,35556999,35558992,
+					35558997,35558999,35559992,35559997,35559999,35572992,35572997,35572999)
 
 --update district charter type
 
@@ -190,7 +271,47 @@ UPDATE edfi.LocalEducationAgency set CharterStatusDescriptorId =
 				35517000,35518000,35519000,35520000,35521000,35524000,35525000,35528000,35529000,35530000,35531000,35532000,35535000,
 				35536000,35539000,35542000,35544000,35546000,35547000,35549000,35550000,35552000,35557000,35560000,35562000,35563000,
 				35564000,35565000,35566000,35567000,35568000,35570000,35573000,35574000,35575000,35576000,35577000,35578000,35579000,
-				35580000,35581000,35582000,35583000,35584000,35585000);
+				35580000,35581000,35582000,35583000,35584000,35585000,35554000, 35555000);
+				
+-- LocalEducationAgency changes for category
+UPDATE edfi.LocalEducationAgency
+	SET LocalEducationAgencyCategoryDescriptorId = 
+	(SELECT DescriptorId
+	FROM edfi.Descriptor WITH (NOLOCK)
+	WHERE [Namespace] = 'uri://nmped.org/LocalEducationAgencyCategoryDescriptor'
+	AND CodeValue = 'State District')
+	WHERE LocalEducationAgencyId IN (35001000, 35002000, 35003000, 35004000, 35005000, 35006000, 35007000, 35008000, 35009000, 35010000, 35011000, 
+									 35012000, 35013000, 35014000, 35015000, 35016000, 35017000, 35018000, 35019000, 35020000, 35021000, 35022000,
+									 35023000, 35024000, 35025000, 35026000, 35027000, 35028000, 35029000, 35030000, 35031000, 35032000, 35033000,
+									 35034000, 35035000, 35036000, 35037000, 35038000, 35039000, 35040000, 35041000, 35042000, 35043000, 35044000,
+									 35045000, 35046000, 35047000, 35048000, 35049000, 35050000, 35051000, 35052000, 35053000, 35054000, 35055000,
+									 35056000, 35057000, 35058000, 35059000, 35060000, 35061000, 35062000, 35063000, 35064000, 35065000, 35066000,
+									 35067000, 35068000, 35069000, 35070000, 35071000, 35072000, 35073000, 35074000, 35075000, 35076000, 35077000,
+									 35078000, 35079000, 35080000, 35081000, 35082000, 35083000, 35084000, 35085000, 35086000, 35087000, 35088000,
+									 35089000);
+UPDATE edfi.LocalEducationAgency
+	SET LocalEducationAgencyCategoryDescriptorId = 
+	(SELECT DescriptorId
+	FROM edfi.Descriptor WITH (NOLOCK)
+	WHERE [Namespace] = 'uri://nmped.org/LocalEducationAgencyCategoryDescriptor'
+	AND CodeValue = 'State Supported')
+	WHERE LocalEducationAgencyId IN (35091000, 35093000, 35094000, 35095000, 35097000, 35099000);
+
+UPDATE edfi.LocalEducationAgency
+	SET LocalEducationAgencyCategoryDescriptorId = 
+	(SELECT DescriptorId
+	FROM edfi.Descriptor WITH (NOLOCK)
+	WHERE [Namespace] = 'uri://nmped.org/LocalEducationAgencyCategoryDescriptor'
+	AND CodeValue = 'State Charter')
+	WHERE LocalEducationAgencyId IN (35501000, 35503000, 35504000, 35505000, 35509000, 35510000, 35511000, 35512000, 
+									 35515000, 35516000, 35517000, 35518000, 35519000, 35520000, 35521000, 35524000,
+									 35525000, 35528000, 35529000, 35530000, 35531000, 35532000, 35535000, 35536000,
+									 35539000, 35542000, 35544000, 35546000, 35547000, 35549000, 35550000, 35552000,
+									 35554000, 35555000, 35557000, 35560000, 35562000, 35563000, 35564000, 35565000,
+									 35566000, 35567000, 35568000, 35570000, 35573000, 35574000, 35575000, 35576000,
+									 35577000, 35578000, 35579000, 35580000, 35581000, 35582000, 35583000, 35584000,
+									 35585000);
+
 
 -- set charter for schools
 
@@ -201,7 +322,20 @@ FROM edfi.School dest
 JOIN edfi.LocalEducationAgency LEA
 	ON dest.LocalEducationAgencyId = dest.LocalEducationAgencyId;
 
--- then set the school charters
+-- then set the school charters for State Charters
+UPDATE edfi.school
+	SET CharterStatusDescriptorId = 
+	(SELECT DescriptorId
+	FROM edfi.Descriptor WITH (NOLOCK)
+	WHERE [Namespace] = 'uri://nmped.org/CharterStatusDescriptor'
+	AND CodeValue = 'STATE CHARTER')
+	WHERE schoolId IN (35501001,35503022,35504001,35505001,35509001,35510001,35511001,35512001,35515001,35516001,
+		35517001,35518001,35519001,35520001,35521001,35524001,35525001,35528001,35529001,35530001,35531001,35532001,
+		35535001,35536001,35539001,35542001,35542002,35544001,35546001,35547001,35549001,35550001,35552001,35554001,
+		35555001,35557001,35560001,35562001,35563001,35564001,35565001,35566001,35567001,35568001,35570001,35573001,
+		35574001,35575001,35576001,35577001,35578001,35579001,35580001,35581001,35582001,35583001,35584001,35585001)
+
+-- then set the school charters for District Charter
 UPDATE edfi.school
 	set CharterStatusDescriptorId = 
 	(select descriptorId
